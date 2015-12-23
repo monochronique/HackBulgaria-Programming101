@@ -1,5 +1,5 @@
 import java.math.BigInteger;
-
+ 
 public class Factorial {
 	public static long fact(int n) {
 		int ans = 1;
