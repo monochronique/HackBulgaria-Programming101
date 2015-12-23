@@ -1,6 +1,6 @@
 
 public class Anagram {
-
+ 
 	public static boolean anagram(String A, String B) {
 
 		if (A.length() != B.length())
