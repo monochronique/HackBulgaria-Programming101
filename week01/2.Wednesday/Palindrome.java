@@ -72,5 +72,4 @@ public class Palindrome {
 		}
 		return (sb.length() - 1) / 2;
 	}
-
 }
