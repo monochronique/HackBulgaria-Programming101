@@ -6,7 +6,7 @@ public class Reverse {
 
 		for (int i = argument.length() - 1; i >= 0; i--) {
 			ans += argument.charAt(i);
-		}
+		} 
 
 		return ans;
 	}
