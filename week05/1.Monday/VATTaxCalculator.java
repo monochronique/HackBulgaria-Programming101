@@ -22,7 +22,6 @@ public class VATTaxCalculator {
 		if (current == null) {
 			throw new NotSupportedCountryException("No such country!");
 		}
-
 		return productPrice * current.getVATTax();
 
 	}
