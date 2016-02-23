@@ -5,9 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Created by georgipavlov on 23.02.16.
- */
+
 public class Warehouse extends Thread{
     private Map<Product, Integer> products;
     private WarehouseManager manager;
