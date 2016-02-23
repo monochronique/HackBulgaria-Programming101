@@ -12,5 +12,6 @@ public class Delivery implements DeliveryRequest {
     @Override
     public void startOperation(Scanner scanner, Warehouse warehouse) {
 
+
     }
 }

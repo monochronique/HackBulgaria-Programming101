@@ -9,9 +9,11 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Warehouse {
     private Map<Product, Integer> products;
+    private WarehouseManager manager;
 
     public Warehouse() {
         products = new ConcurrentHashMap<>();
+        manager = new WarehouseManager(this);
     }
 
     // добавя продукт в склада. Ако го има вече, му се увеличава количеството.

@@ -59,7 +59,10 @@ public class Supply implements DeliveryRequest{
         System.out.println("Enter weight");
         String weight = scanner.nextLine();
         choice = Matcher.returnWeight(weight," in adding product/exit");
-        return new Product(name,choice);
+        System.out.println("Enter id");
+        String id = scanner.nextLine();
+        int idInt = Matcher.returnQuantity(id," in adding product/exit");
+        return new Product(name,choice,idInt);
     }
 
     private int menu3(Scanner scanner)  throws InputExeption{
