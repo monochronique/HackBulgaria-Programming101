@@ -17,7 +17,7 @@ public class Matcher {
     }
 
     private static boolean matchQuantity(String line) {
-        return line.matches("[-+]?\\d*\\.?\\d+");
+            return line.matches("[-+]?\\d*\\.?\\d+");
     }
 
     private static boolean matchName(String line) {
@@ -27,6 +27,8 @@ public class Matcher {
            return false;
        }
     }
+
+
 
     public static int returnKey(String tryNumber,String exeptionMessage) throws InputExeption {
         int choice;
@@ -54,5 +56,16 @@ public class Matcher {
         } else {
             throw new InputExeption(exeptionMessage);
         }
+    }
+
+    public static double returnWeight(String tryWeight,String exeptionMessage) throws InputExeption {
+        double weight;
+
+        if (matchQuantity(tryWeight)) {
+            weight = Double.parseDouble(tryWeight);
+        } else {
+            throw new InputExeption(exeptionMessage);
+        }
+        return weight;
     }
 }

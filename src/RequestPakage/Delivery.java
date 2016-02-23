@@ -1,5 +1,6 @@
 package RequestPakage;
 
+import DroneDeliveryPakage.Warehouse;
 import ProjectInterfaces.DeliveryRequest;
 
 import java.util.Scanner;
@@ -9,7 +10,7 @@ import java.util.Scanner;
  */
 public class Delivery implements DeliveryRequest {
     @Override
-    public void startOperation(Scanner scanner) {
+    public void startOperation(Scanner scanner, Warehouse warehouse) {
 
     }
 }

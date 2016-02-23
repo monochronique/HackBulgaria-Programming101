@@ -5,14 +5,14 @@ package DroneDeliveryPakage;
  */
 public class Product {
     String name;
-    int weightPerQuantity;
+    double weightPerQuantity;
 
-    public Product(String n, int w) {
+    public Product(String n, double w) {
         name = n;
         weightPerQuantity = w;
     }
 
-    public int getWeight(){
+    public double getWeight(){
         return weightPerQuantity;
     }
 }
