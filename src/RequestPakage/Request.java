@@ -27,28 +27,17 @@ public class Request {
         while (loop) {
             int choice;
             String tryNumber = scanner.nextLine();
-            if (match(tryNumber)) {
-                choice = Integer.parseInt(tryNumber);
-            } else {
-                throw new InputExeption("in (Enter operation (1)delivery (2)supply)");
-            }
+            choice =  Matcher.returnKey(tryNumber,"in (Enter operation (1)delivery (2)supply)");
             if(choice == 3){
                 loop = false;
                 continue;
             }
             request = factory.maker(choice);
-            request.startOperation(scanner);
+            request.startOperation(scanner,currentWarehouse);
         }
 
 
     }
 
 
-    private boolean match(String line) {
-        if (line.equals("1") || line.equals("2") || line.equals("3")) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 }
