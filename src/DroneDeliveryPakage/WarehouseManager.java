@@ -26,6 +26,17 @@ public class WarehouseManager extends Thread{
     @Override
     public void run() {
         while (loop){
+            tryToAdd();
+        }
+    }
+
+    public void tryToAdd(){
+        double time;
+        for (int i = 0; i < timestampAddingList.size() ; i++) {
+            time = System.currentTimeMillis();
+            if( time - timestampAddingList.get(i).getTime() >= timestampAddingList.get(i).getHowLongTime()){
+                warehouse.addHashTable(timestampAddingList.get(i).getProducts());
+            }
 
         }
     }

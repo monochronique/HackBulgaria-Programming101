@@ -12,6 +12,19 @@ import java.util.concurrent.ConcurrentHashMap;
 public class TimestampAdding {
     private Map<Product, Integer> products;
     private double time;
+    private double howLongTime;
+
+    public void setProducts(Map<Product, Integer> products) {
+        this.products = products;
+    }
+
+    public double getHowLongTime() {
+        return howLongTime;
+    }
+
+    public void setHowLongTime(double howLongTime) {
+        this.howLongTime = howLongTime;
+    }
 
     public TimestampAdding(){
         products = new HashMap<>();

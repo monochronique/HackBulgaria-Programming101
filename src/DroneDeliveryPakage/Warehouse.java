@@ -1,19 +1,28 @@
 package DroneDeliveryPakage;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by georgipavlov on 23.02.16.
  */
-public class Warehouse {
+public class Warehouse extends Thread{
     private Map<Product, Integer> products;
     private WarehouseManager manager;
+    private boolean loop = true;
 
     public Warehouse() {
         products = new ConcurrentHashMap<>();
         manager = new WarehouseManager(this);
+    }
+
+    @Override
+    public void run() {
+        while (loop){
+
+        }
     }
 
     // добавя продукт в склада. Ако го има вече, му се увеличава количеството.
@@ -24,6 +33,21 @@ public class Warehouse {
         } else {
             products.put(p, quantity);
         }
+    }
+
+    public void addHashTable(Map<Product,Integer> timeStampTable) {
+        Iterator it = timeStampTable.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            if (products.containsKey(pair.getKey())) {
+                int times = products.get(pair.getKey())+ (Integer)pair.getValue();
+                products.put((Product)pair.getKey(), times);
+            } else {
+                products.put((Product) pair.getKey(), (Integer) pair.getValue());
+            }
+            it.remove(); // avoids a ConcurrentModificationException
+        }
+
     }
 
     // Проверява дали този продукт го има в поне даденото количество
