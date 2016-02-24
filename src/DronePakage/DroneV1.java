@@ -2,14 +2,17 @@ package DronePakage;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-/**
- * Created by georgipavlov on 24.02.16.
- */
+
 public class DroneV1 extends Thread {
+
+
+
+
     private long uniqueID;
     private long batteryUnits = 2000;
     private int weightUnits = 500;
     private int chargingRatePM = 5;
+
 
     // за да се връща уникално ИД всеки път и да се запазва в uniqueID
     private static AtomicLong NEXT_ID = new AtomicLong(0);
@@ -76,11 +79,11 @@ public class DroneV1 extends Thread {
 
             while (isInQueue) {
 
-                while (batteryUnits < 2000) { // Все едно зареждане на една
-                    // минута
+                while (batteryUnits < 2000) {
+                    // Все едно зареждане на една минута
                     batteryUnits += getChargingRatePM();
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(1000*60);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -94,6 +97,7 @@ public class DroneV1 extends Thread {
                     setBatteryUnits(remainingBU);
                     long remainingDU = getRemainingDistanceUnitsForDelivery() - 1;
                     setDistanceUnitsForDelivery(remainingDU);
+
                 }
             }
 
