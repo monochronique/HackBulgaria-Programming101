@@ -17,7 +17,7 @@ import java.util.Scanner;
  */
 public class Delivery implements DeliveryRequest {
     private Warehouse warehouse;
-    private ArrayList<Order> pakageOrder = new ArrayList<>();
+
 
     @Override
     public void startOperation(Scanner scanner, Warehouse warehouse) {
@@ -45,10 +45,7 @@ public class Delivery implements DeliveryRequest {
             }
 
         }
-        DB.orders.add(new Order(pakageOrder));
-        synchronized (DB.orders){
-            DB.orders.notifyAll();
-        }
+
     }
 
     private int menu1(Scanner scanner) throws InputExeption {
@@ -63,19 +60,34 @@ public class Delivery implements DeliveryRequest {
 
 
     public void findProduct(Scanner scanner) throws InputExeption {
+        ArrayList<Product> products = new ArrayList<>();
+        Product product;
+        int innerLoop = 1;
+        while (innerLoop == 1){
         System.out.println("enter quantity");
         String line = scanner.nextLine();
         int quantity = Matcher.returnQuantity(line," in (enter quantity)");
-        Product product = menu2(scanner);
+            product = menu2(scanner);
+        products.add(product);
+
         if(warehouse.containProductNtimes(product,quantity)){
             warehouse.getProductNtimes(product,quantity);
-            addOrder(product,scanner);
-
         }else {
             System.out.println("can not make operation!..");
+            throw  new InputExeption(" in findProduct");
         }
+            innerLoop = menu4(scanner);
+        }
+        addOrder(products,scanner);
 
 
+
+    }
+
+    private int menu4(Scanner scanner){
+        System.out.println("enter 1 to add new product");
+        System.out.println("enter 2 to continue to adding coordinates");
+        return scanner.nextInt();
 
     }
 
@@ -85,16 +97,18 @@ public class Delivery implements DeliveryRequest {
         String name;
         name = scanner.nextLine();
         name = Matcher.returnName(name,"in adding product/exit");
-        System.out.println("Enter weight");
+        System.out.println("Enter weight...");
         String weight = scanner.nextLine();
+
         choice = Matcher.returnWeight(weight," in adding product/exit");
         System.out.println("Enter id");
         String id = scanner.nextLine();
         int idInt = Matcher.returnQuantity(id," in adding product/exit");
         return new Product(name,choice,idInt);
+
     }
 
-    public void addOrder (Product product,Scanner scanner) throws InputExeption {
+    public void addOrder (ArrayList<Product> products,Scanner scanner) throws InputExeption {
         System.out.println("Enter coordinates");
         System.out.println("enter x");
         String xString = scanner.nextLine();
@@ -105,10 +119,13 @@ public class Delivery implements DeliveryRequest {
         CalculatePath path = new CalculatePath();
         int pathCalc = path.calculatePath(new PairCoordinates(x,y),warehouse);
         Order order = new Order((pathCalc + 2)*60_000,new PairCoordinates(x,y));
-         pakageOrder.add(order);
-
-
-
+        for (int i = 0; i < products.size() ; i++) {
+            order.addProduct(products.get(i));
+        }
+        DB.orders.add(order);
+        synchronized (DB.orders){
+            DB.orders.notifyAll();
+        }
     }
 
 
