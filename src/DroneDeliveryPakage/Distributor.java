@@ -86,7 +86,7 @@ public class Distributor extends Thread {
                 }
             }
             if(count == howManyDrones){
-                startDelivery(drones,DB.orders.poll());
+                startDelivery(drones,DB.orders.peek());
             }else {
                 System.out.println("Your delivery will be delayed " + DB.orders.peek().getCoordinates());
             }
