@@ -3,6 +3,7 @@ package DroneDeliveryPakage;
 import Calculations.CalculateParameters;
 import DataBase.DB;
 import DronePakage.Drone;
+import DronePakage.DroneV1;
 import sun.awt.windows.ThemeReader;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class Distributor extends Thread {
     public static   final int NUMBER_OF_DRONES = 10;
     private boolean loop = true;
-    private List<Drone> drones;
+    private List<DroneV1> drones;
 
     public Distributor(){
         drones = new CopyOnWriteArrayList<>();
@@ -69,7 +70,7 @@ public class Distributor extends Thread {
     }
 
     public void viewForFreeBattery() {
-        ArrayList<Drone> drones;
+        ArrayList<DroneV1> drones;
         int count;
 
         for (int i = 0; i <DB.orders.size() ; i++) {
@@ -77,7 +78,7 @@ public class Distributor extends Thread {
             count = 0;
             drones = new ArrayList<>();
             p:for (int j = 0; j < drones.size() ; j++) {
-                if(DB.orders.peek().getTime() <= drones.get(j).getBattery()){
+                if(DB.orders.peek().getTime() <= drones.get(j).getBatteryUnits()){
                     if(count == howManyDrones){
                         break p;
                     }
@@ -94,7 +95,10 @@ public class Distributor extends Thread {
         }
     }
 
-    public void startDelivery(ArrayList<Drone> drones,Order order){
-
+    public void startDelivery(ArrayList<DroneV1> drones,Order order){
+        for (int i = 0; i < drones.size() ; i++) {
+            drones.get(i).setToWorking();
+            drones.get(i).setOrder(order);
+        }
     }
 }

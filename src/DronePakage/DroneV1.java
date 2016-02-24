@@ -1,5 +1,10 @@
 package DronePakage;
 
+import DroneDeliveryPakage.Order;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicLong;
 
 
@@ -12,7 +17,34 @@ public class DroneV1 extends Thread {
     private long batteryUnits = 2000;
     private int weightUnits = 500;
     private int chargingRatePM = 5;
+    private  int totalTime;
+    private Order order;
+    private List<Order> ordersToDeliver;
+    private List<OpenWindow> openWindows;
 
+    public DroneV1() {
+        uniqueID = NEXT_ID.incrementAndGet();
+        ordersToDeliver = new CopyOnWriteArrayList<>();
+        openWindows = new CopyOnWriteArrayList<>();
+
+        this.start();
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public int getTotalTime() {
+        return totalTime;
+    }
+
+    public void setTotalTime(int totalTime) {
+        this.totalTime = totalTime;
+    }
 
     // за да се връща уникално ИД всеки път и да се запазва в uniqueID
     private static AtomicLong NEXT_ID = new AtomicLong(0);
@@ -56,10 +88,7 @@ public class DroneV1 extends Thread {
         return batteryUnits;
     }
 
-    public DroneV1() {
-        uniqueID = NEXT_ID.incrementAndGet();
-        this.start();
-    }
+
 
     // разни помощни функции
     public long getID() {
