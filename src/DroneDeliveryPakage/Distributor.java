@@ -64,26 +64,37 @@ public class Distributor extends Thread {
                 drones.wait();
             }
         }
+        viewForFreeBattery();
 
     }
 
     public void viewForFreeBattery() {
-        ArrayList<Order> temp;
+        ArrayList<Drone> drones;
+        int count;
+
         for (int i = 0; i <DB.orders.size() ; i++) {
-            int howManyDornes = CalculateParameters.getNumberOfRequiredDrones(DB.orders.peek());
-            for (int j = 0; j < drones.size() ; j++) {
-
-               if(DB.orders.peek().getTime() <= drones.get(j).getBattery()){
-
-               }
-
-
+            int howManyDrones = CalculateParameters.getNumberOfRequiredDrones(DB.orders.peek());
+            count = 0;
+            drones = new ArrayList<>();
+            p:for (int j = 0; j < drones.size() ; j++) {
+                if(DB.orders.peek().getTime() <= drones.get(j).getBattery()){
+                    if(count == howManyDrones){
+                        break p;
+                    }
+                   count++;
+                   drones.add(drones.get(j));
+                }
+            }
+            if(count == howManyDrones){
+                startDelivery(drones,DB.orders.poll());
+            }else {
+                System.out.println("Your delivery will be delayed " + DB.orders.peek().getCoordinates());
             }
 
         }
     }
 
-    public int DroneCapcity(){
+    public void startDelivery(ArrayList<Drone> drones,Order order){
 
     }
 }
