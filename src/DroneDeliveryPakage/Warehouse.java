@@ -1,5 +1,7 @@
 package DroneDeliveryPakage;
 
+import CoordinatesPakage.PairCoordinates;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -10,6 +12,7 @@ public class Warehouse extends Thread{
     private Map<Product, Integer> products;
     private WarehouseManager manager;
     private boolean loop = true;
+    private PairCoordinates pairCoordinates;
 
     public Warehouse() {
         products = new ConcurrentHashMap<>();
