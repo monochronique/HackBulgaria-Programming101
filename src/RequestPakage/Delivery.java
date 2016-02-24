@@ -4,7 +4,6 @@ import Calculations.CalculatePath;
 import CoordinatesPakage.PairCoordinates;
 import DataBase.DB;
 import DroneDeliveryPakage.Order;
-import DroneDeliveryPakage.Orders;
 import DroneDeliveryPakage.Product;
 import DroneDeliveryPakage.Warehouse;
 import ExeptionsPakage.InputExeption;
@@ -46,7 +45,7 @@ public class Delivery implements DeliveryRequest {
             }
 
         }
-        DB.orders.add(new Orders(pakageOrder));
+        DB.orders.add(new Order(pakageOrder));
         synchronized (DB.orders){
             DB.orders.notifyAll();
         }
@@ -105,7 +104,9 @@ public class Delivery implements DeliveryRequest {
         int y = Matcher.returnQuantity(yString," in adding y coordinates");
         CalculatePath path = new CalculatePath();
         int pathCalc = path.calculatePath(new PairCoordinates(x,y),warehouse);
-         pakageOrder.add(new Order(product,(pathCalc + 2)*60_000,new PairCoordinates(x,y)));
+        Order order = new Order((pathCalc + 2)*60_000,new PairCoordinates(x,y));
+         pakageOrder.add(order);
+
 
 
     }
