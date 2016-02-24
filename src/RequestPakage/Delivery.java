@@ -47,6 +47,9 @@ public class Delivery implements DeliveryRequest {
 
         }
         DB.orders.add(new Orders(pakageOrder));
+        synchronized (DB.orders){
+            DB.orders.notifyAll();
+        }
     }
 
     private int menu1(Scanner scanner) throws InputExeption {
@@ -101,7 +104,7 @@ public class Delivery implements DeliveryRequest {
         String yString = scanner.nextLine();
         int y = Matcher.returnQuantity(yString," in adding y coordinates");
         CalculatePath path = new CalculatePath();
-        int pathCalc = path.calculatePath(new PairCoordinates(x,y));
+        int pathCalc = path.calculatePath(new PairCoordinates(x,y),warehouse);
          pakageOrder.add(new Order(product,(pathCalc + 2)*60_000,new PairCoordinates(x,y)));
 
 

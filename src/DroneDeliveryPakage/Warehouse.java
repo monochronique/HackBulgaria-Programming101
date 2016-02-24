@@ -8,23 +8,31 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-public class Warehouse extends Thread{
+public class Warehouse {
     private Map<Product, Integer> products;
     private WarehouseManager manager;
-    private boolean loop = true;
     private PairCoordinates pairCoordinates;
+    private Distributor distributor;
 
-    public Warehouse() {
+    public Warehouse(PairCoordinates pairCoordinates) {
         products = new ConcurrentHashMap<>();
         manager = new WarehouseManager(this);
+        manager.start();
+        distributor = new Distributor();
+        distributor.start();
+        this.pairCoordinates = pairCoordinates;
     }
 
-    @Override
-    public void run() {
-        while (loop){
-
-        }
+    public PairCoordinates getPairCoordinates() {
+        return pairCoordinates;
     }
+
+    public void turnOff(){
+        manager.setLoop(false);
+        distributor.setLoop(false);
+    }
+
+
 
     // добавя продукт в склада. Ако го има вече, му се увеличава количеството.
     public void addProduct(Product p,int quantity) {
