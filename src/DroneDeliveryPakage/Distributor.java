@@ -1,5 +1,6 @@
 package DroneDeliveryPakage;
 
+import Calculations.CalculateParameters;
 import DataBase.DB;
 import DronePakage.Drone;
 import sun.awt.windows.ThemeReader;
@@ -12,7 +13,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Created by georgipavlov on 24.02.16.
  */
 public class Distributor extends Thread {
-    private  final int NUMBER_OF_DRONES = 10;
+    public static   final int NUMBER_OF_DRONES = 10;
     private boolean loop = true;
     private List<Drone> drones;
 
@@ -69,7 +70,9 @@ public class Distributor extends Thread {
     public void viewForFreeBattery() {
         ArrayList<Order> temp;
         for (int i = 0; i <DB.orders.size() ; i++) {
+            int howManyDornes = CalculateParameters.getNumberOfRequiredDrones(DB.orders.peek());
             for (int j = 0; j < drones.size() ; j++) {
+
                if(DB.orders.peek().getTime() <= drones.get(j).getBattery()){
 
                }
@@ -78,5 +81,9 @@ public class Distributor extends Thread {
             }
 
         }
+    }
+
+    public int DroneCapcity(){
+
     }
 }

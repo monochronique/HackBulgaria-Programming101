@@ -10,6 +10,7 @@ import ExeptionsPakage.InputExeption;
 import ProjectInterfaces.DeliveryRequest;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 /**
@@ -62,23 +63,27 @@ public class Delivery implements DeliveryRequest {
     public void findProduct(Scanner scanner) throws InputExeption {
         ArrayList<Product> products = new ArrayList<>();
         Product product;
+        HashMap<Integer,Integer> hashMap = new HashMap<>();
         int innerLoop = 1;
         while (innerLoop == 1){
         System.out.println("enter quantity");
         String line = scanner.nextLine();
         int quantity = Matcher.returnQuantity(line," in (enter quantity)");
             product = menu2(scanner);
-        products.add(product);
+
 
         if(warehouse.containProductNtimes(product,quantity)){
             warehouse.getProductNtimes(product,quantity);
+            hashMap.put(product.getId(),quantity);
+            products.add(product);
+
         }else {
             System.out.println("can not make operation!..");
             throw  new InputExeption(" in findProduct");
         }
             innerLoop = menu4(scanner);
         }
-        addOrder(products,scanner);
+        addOrder(products,scanner,hashMap);
 
 
 
@@ -108,7 +113,7 @@ public class Delivery implements DeliveryRequest {
 
     }
 
-    public void addOrder (ArrayList<Product> products,Scanner scanner) throws InputExeption {
+    public void addOrder (ArrayList<Product> products,Scanner scanner,HashMap<Integer,Integer> map) throws InputExeption {
         System.out.println("Enter coordinates");
         System.out.println("enter x");
         String xString = scanner.nextLine();
@@ -122,6 +127,7 @@ public class Delivery implements DeliveryRequest {
         for (int i = 0; i < products.size() ; i++) {
             order.addProduct(products.get(i));
         }
+        order.addMap(map);
         DB.orders.add(order);
         synchronized (DB.orders){
             DB.orders.notifyAll();
