@@ -18,6 +18,14 @@ public class Distributor extends Thread {
     private boolean loop = true;
     private List<DroneV1> drones;
 
+    public List<DroneV1> getDrones() {
+        return drones;
+    }
+
+    public void setDrones(List<DroneV1> drones) {
+        this.drones = drones;
+    }
+
     public Distributor(){
         drones = new CopyOnWriteArrayList<>();
     }

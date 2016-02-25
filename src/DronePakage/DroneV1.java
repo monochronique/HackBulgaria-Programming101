@@ -20,7 +20,9 @@ public class DroneV1 extends Thread {
     private  int totalTime;
     private Order order;
     private List<Order> ordersToDeliver;
-    private List<OpenWindow> openWindows;
+    public List<OpenWindow> openWindows;
+
+
 
     public DroneV1() {
         uniqueID = NEXT_ID.incrementAndGet();
