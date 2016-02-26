@@ -16,7 +16,7 @@ import java.util.List;
 public class SchedulesForDeliveries {
     private List<DroneV1> drones;
     private Order order;
-    ArrayList<OpenWindow> potentionalOpenWindows;
+    ArrayList<OpenWindowsWithDroneId> potentionalOpenWindows;
     Distributor distributor;
 
     public void starSearch(Order order, int countDrones, Distributor distributor){
@@ -36,15 +36,16 @@ public class SchedulesForDeliveries {
             for (int i = 0; i <drones.get(j).openWindows.size() ; i++) {
                 tempStartTime = drones.get(j).openWindows.get(i).getStartTime();
                 tempEndTime = drones.get(j).openWindows.get(i).getCurentTime();
-                potentionalOpenWindows.add(drones.get(j).openWindows.get(i));
+                OpenWindowsWithDroneId openWinId =new OpenWindowsWithDroneId(drones.get(j).openWindows.get(i),j);
+                potentionalOpenWindows.add(openWinId);
 
               boolean candidate = isPotentialCandidate(tempStartTime,tempEndTime, drones.get(j).openWindows.get(i));
                 if(!candidate){
-                   potentionalOpenWindows.remove(drones.get(j).openWindows.get(i));
+                   potentionalOpenWindows.remove(openWinId);
                     continue;
                 }
                 if(countDrones > 1){
-                   startProceduresForAdding(j,tempStartTime,tempEndTime);
+                   startProceduresForAdding(j,tempStartTime,tempEndTime,countDrones,openWinId);
                 }
 
             }
@@ -100,18 +101,53 @@ public class SchedulesForDeliveries {
 
     }
 
-    public void startProceduresForAdding(int index,double startTime,double endTime){
+    public void startProceduresForAdding(int index,double startTime,double endTime,int countDrones,OpenWindowsWithDroneId base){
         double tempStartTime = startTime;
         double tempEndTime = endTime;
-        for (int i = 0; i < drones.size() ; i++) {
+        ArrayList<OpenWindowsWithDroneId> openWindows = new ArrayList<>();
+        openWindows.add(base);
+        z: for (int i = 0; i < drones.size() ; i++) {
 
             if(i != index){
-                for (int j = 0; j < drones.get(i).openWindows.size() ; j++) {
+               p:  for (int j = 0; j < drones.get(i).openWindows.size() ; j++) {
+                   if(drones.get(i).openWindows.get(j).getStartTime() > tempEndTime){
+                       tempStartTime = drones.get(i).openWindows.get(j).getStartTime();
+                   }
+                   if(drones.get(i).openWindows.get(j).getCurentTime() < tempEndTime){
+                       tempEndTime = drones.get(i).openWindows.get(j).getCurentTime();
+                   }
+                   if(tempEndTime - tempStartTime < 0){
+                       continue p;
+                   }else {
+                       OpenWindowsWithDroneId id = new OpenWindowsWithDroneId(drones.get(i).openWindows.get(j),i);
+                       openWindows.add(id);
+                       if(!multiAddOpenWindows(openWindows,tempStartTime,tempEndTime)){
+                           openWindows.remove(id);
+                       }else {
+                           continue z;
+                       }
+                   }
+                   if(countDrones  == openWindows.size()){
+                       //startPut
+                   }
 
                 }
             }
 
         }
+    }
+
+    public boolean multiAddOpenWindows(ArrayList<OpenWindowsWithDroneId> openWindows,double startTime,double endTime){
+        for (int i = 0; i < openWindows.size(); i++) {
+            if(!isPotentialCandidate(startTime,endTime,openWindows.get(i).getOpenWindow())){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void startPutingToOpenWindows(){
+
     }
 
 
