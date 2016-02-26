@@ -8,9 +8,9 @@ import java.util.Scanner;
 /**
  * Created by georgipavlov on 26.02.16.
  */
-public class Delivery implements DeliverySupplyRequest {
+public class Supply implements DeliverySupplyRequest {
     @Override
     public void startOperation(Scanner scanner, Warehouse warehouse) {
-        System.out.println("Delivery");
+        System.out.println("supply");
     }
 }
